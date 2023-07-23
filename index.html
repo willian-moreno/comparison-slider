@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+	<head>
+		<meta charset="UTF-8" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1.0" />
+		<script src="https://cdn.tailwindcss.com?plugins=aspect-ratio"></script>
+
+		<title>Comparison Slider</title>
+	</head>
+
+	<body class="m-0 p-0 box-border bg-slate-800">
+		<div class="container mx-auto p-5">
+			<div
+				class="comparison-slider flex justify-center border border-2 border-gray-100 w-[fit-content] h-[80vh] m-auto relative select-none">
+				<img
+					class="h-full object-cover overflow-hidden object-left-top"
+					src="./assets/good.jpg"
+					alt="Imagem minimalista do por do sol e montanhas com boa resolução" />
+
+				<div class="comparison-target h-full absolute top-0 left-0">
+					<img
+						class="h-full object-cover overflow-hidden object-left-top"
+						src="./assets/bad.jpg"
+						alt="Imagem minimalista do por do sol e montanhas com resolução ruim" />
+				</div>
+
+				<div
+					class="comparison-bar flex items-center justify-center h-full w-0 z-[3] absolute cursor-ew-resize">
+					<div class="vertical-bar bg-gray-100 h-full w-[2px] absolute"></div>
+					<div
+						class="circle-pointer flex items-center justify-content-center rounded-full bg-gray-100 text-slate-900 w-[30px] h-[30px] absolute">
+						<ion-icon name="caret-back-outline"></ion-icon>
+						<ion-icon name="caret-forward-outline"></ion-icon>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<script
+			type="module"
+			src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+		<script
+			nomodule
+			src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+		<script type="text/javascript">
+			window.onresize = () => {
+				const comparisonSlider = document.querySelector('.comparison-slider');
+				const comparisonBar = comparisonSlider.querySelector('.comparison-bar');
+				comparisonBar.style.left = 'initial';
+				const targetComparisonWrapper = comparisonSlider.querySelector('.comparison-target');
+				const { left } = comparisonSlider.querySelector('.vertical-bar').getBoundingClientRect();
+				targetComparisonWrapper.style.width = `50%`;
+			};
+
+			window.dispatchEvent(new Event('resize'));
+
+			/**
+			 *@param {Event} event
+			 *@param {HTMLDivElement} comparisonSlider
+			 */
+			function handleMouseMove(event, comparisonSlider) {
+				const { width: widthWrapper, left: leftWrapper } = comparisonSlider.getBoundingClientRect();
+
+				const comparisonBar = comparisonSlider.querySelector('.comparison-bar');
+				const targetComparisonWrapper = comparisonSlider.querySelector('.comparison-target');
+				const { width: widthVerticalBar } = comparisonBar
+					.querySelector('.vertical-bar')
+					.getBoundingClientRect();
+				const x = event.x - leftWrapper - widthVerticalBar;
+
+				if (x < 0) {
+					comparisonBar.style.left = `${0}px`;
+					targetComparisonWrapper.style.width = `0%`;
+					return;
+				}
+
+				if (x > widthWrapper) {
+					comparisonBar.style.left = `${widthWrapper - 2}px`;
+					targetComparisonWrapper.style.width = `100%`;
+					return;
+				}
+
+				const percentage = (x / widthWrapper) * 100;
+				targetComparisonWrapper.style.width = `${percentage}%`;
+				comparisonBar.style.left = `${x}px`;
+			}
+
+			const comparisonSlider = document.querySelector('.comparison-slider');
+
+			comparisonSlider.addEventListener('mouseover', function (event) {
+				comparisonSlider.addEventListener('mousemove', (event) => handleMouseMove(event, this));
+				comparisonSlider.addEventListener('touchmove', (event) => handleMouseMove(event, this));
+			});
+
+			comparisonSlider.addEventListener('mouseleave', function () {
+				comparisonSlider.removeEventListener('mousemove', handleMouseMove);
+				comparisonSlider.removeEventListener('touchmove', handleMouseMove);
+			});
+		</script>
+	</body>
+</html>
