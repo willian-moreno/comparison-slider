@@ -24,6 +24,16 @@ O projeto é o resultado de mais um desafio pessoal. Ao navegar nas redes sociai
   <li>HTML</li>
   <li>CSS</li>
   <li>JavaScript</li>
+  <li>
+    <a href="https://tailwindcss.com/" target="_blank">
+      Tailwind
+    <a>
+  </li>
+  <li>
+    <a href="https://ionic.io/ionicons" target="_blank">
+      Ion Icons
+    </a>
+  </li>
 </ul>
 
 <h3>📌 Licença</h3>
